@@ -1,43 +1,151 @@
-# Doctor Tracker — Healthcare Administration Portal
+# Doctor Tracker Dashboard
 
-A modern, high-performance administrative web application designed for healthcare facilities to manage credentialed physicians, track patient clinical records, monitor doctor loads, and visualize health intake metrics in real time.
-
----
-
-## Standardized Project Documentation
-
-| Section | Requirement / Details |
-|---|---|
-| **Description** | Doctor Tracker is an enterprise-grade administrative portal engineered for clinical practices and hospital networks. It empowers healthcare administrators to securely manage physician credentials, oversee clinical caseloads, assign and update patient medical profiles, and evaluate operational capacity through real-time interactive analytics. |
-| **Setup Guide** | **1. Prerequisites:** Node.js (v18+), MongoDB instance.<br><br>**2. Backend Setup:**<br>`cd doctor-tracker-server`<br>`npm install`<br>Copy `.env.example` to `.env` and set `DATABASE_URL`, `PORT=3001`, and JWT secrets.<br>`npm run dev`<br><br>**3. Frontend Setup:**<br>`cd doctor-tracker-client`<br>`npm install`<br>Copy `.env.example` to `.env.local` (`NEXT_PUBLIC_BACKEND_API_URL=http://localhost:3001`).<br>`npm run dev`<br><br>**4. Access:** Open [http://localhost:3000](http://localhost:3000) in your browser. |
-| **System Architecture** | Built on a decoupled client-server architecture. The frontend utilizes **Next.js 16 App Router** with hybrid Server Components for optimized data prefetching and interactive Client Components for real-time state manipulation. The standalone **Node.js/Express** backend delivers modular RESTful endpoints adhering to strict clean-code controller/service patterns, backed by **MongoDB/Mongoose** with indexed queries for performant filtering, searching, and pagination. Authentication is governed by `httpOnly` JWT tokens with Next.js 16 route proxy enforcement. |
-| **Technical Decisions** | **1. Next.js 16 App Router with `proxy.ts` over Legacy Middleware:** Transitioned to Next.js 16's modern `proxy.ts` convention to decouple network-boundary edge routing from the core rendering tree, preventing blocking prerender issues while strictly enforcing session guards on `/dashboard`, `/doctor`, and `/patients`.<br><br>**2. Hybrid Optimistic State & Server Synchronization (`useRef` + `useEffect`):** Client components maintain optimistic UI responses for edit and delete actions while automatically syncing local state against server component prop refreshes triggered by search and filter query parameters. |
-| **Visual Evidence** | - **Dashboard:** Overview metrics, physician patient load bar chart, condition distribution pie chart, and intake timeline.<br>- **Physician Directory:** Multi-filter physician cards with pagination, direct patient linking, and "+ Add Doctor" flow.<br>- **Doctor's Patient Panel:** Dedicated physician summary card with assigned patient table, inline delete, and doctor-assigned patient creation modal.<br>- **Patient Directory:** Global patient listing with inline search, condition dropdowns, date filtering, and live editing modal. |
+A modern, TailAdmin‑styled dashboard for managing doctors and patients. The app is built with **Next.js (React 18)**, **shadcn UI**, **TypeScript**, and **Tailwind CSS**. It communicates with a separate Express/TS backend (`doctor‑tracker‑server`) that provides authentication, CRUD operations, and pagination.
 
 ---
 
-## Core Features Checklist
+## ✨ Overview
 
-- [x] **Secure Authentication**: Register, Login, Logout with dynamic navbar state and route protection.
-- [x] **Doctor Management**:
-  - [x] Create doctor (Name, Specialization, Hospital, Phone, Email)
-  - [x] Directory view with responsive cards
-  - [x] Search, multi-field filter (specialization, hospital, date range)
-  - [x] Pagination controls
-  - [x] Doctor-specific patient management (`/doctor/[id]/patients`)
-  - [x] Add patient assigned to specific doctor
-  - [x] Remove patient from doctor's list
-- [x] **Patient Management**:
-  - [x] Dedicated patient directory (`/patients`)
-  - [x] Edit patient modal (Name, Age, Phone, Address, Condition)
-  - [x] Delete patient with instant UI update
-  - [x] Search by name and phone
-  - [x] Filter by clinical condition and date range
-  - [x] Pagination controls
-- [x] **Analytics Dashboard (`/dashboard`)**:
-  - [x] Total doctors and total patients metrics
-  - [x] Average patient load per doctor calculation
-  - [x] Patient load per doctor bar chart (Recharts)
-  - [x] Diagnostic conditions breakdown pie chart
-  - [x] Patient intake timeline line chart
-- [x] **Design & UX**: Warm editorial aesthetic, accessible typography, loading skeletons, responsive mobile/desktop layouts.
+- **Responsive UI** – works on desktop, tablet, and mobile.
+- **Authentication** – login, register, logout with JWT stored in http‑only cookies.
+- **Role‑based navigation** – the navbar updates based on auth state.
+- **TailAdmin design language** – custom colour tokens, modern fonts, glass‑style header, and card‑based layouts.
+- **Pagination** – doctors and patients are paginated on the server side.
+- **Proxy middleware** – protects private routes and redirects logged‑in users away from login/sign‑up pages.
+- **Full‑stack** – separate backend (`doctor‑tracker‑server`) on `http://localhost:3001`.
+
+---
+
+## 📸 Screenshots
+
+Below are some key screens of the application.  The images are stored in the project’s **user‑uploaded** assets folder; they are referenced directly with absolute file URLs so they render in the Antigravity UI.
+
+---
+
+### 1. Dashboard (Home)
+
+![Dashboard](/Users/oasif/.gemini/antigravity/brain/98de204b-fd55-4fb4-9f39-4a3375449cc4/.user_uploaded/media_1794407817124_c759c577.jpg)
+
+*The main dashboard shows KPI cards, recent activity, and quick navigation shortcuts.*
+
+---
+
+### 2. Doctor Directory
+
+*(Add your own screenshot of the doctor list here – you can replace the placeholder with another uploaded image if you have one.)*
+
+---
+
+### 3. Patient Directory
+
+*(Add your own screenshot of the patient list here.)*
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js** (>= 18) and **npm** (or **yarn**)
+- **MongoDB** instance (local or remote) – the backend expects a `MONGODB_URI` env var.
+- **Git** (to clone the repositories)
+
+### Clone the repositories
+
+```bash
+# Frontend
+git clone <your‑frontend‑repo‑url> doctor-tracker-client
+cd doctor-tracker-client
+
+# Backend (in a sibling folder)
+git clone <your‑backend‑repo‑url> doctor-tracker-server
+cd doctor-tracker-server
+```
+
+### Install dependencies
+
+```bash
+# Frontend
+npm install   # from doctor-tracker-client
+
+# Backend
+cd ../doctor-tracker-server
+npm install
+```
+
+### Environment variables
+
+Create a `.env.local` file in **both** projects.
+
+**Frontend (`doctor-tracker-client/.env.local`):**
+
+```env
+NEXT_PUBLIC_BACKEND_API_URL=http://localhost:3001   # point to the backend
+```
+
+**Backend (`doctor-tracker-server/.env`):**
+
+```env
+PORT=3001
+MONGODB_URI=mongodb://localhost:27017/doctor-tracker
+JWT_SECRET=your‑strong‑secret
+```
+
+### Run the applications
+
+```bash
+# In one terminal – backend
+cd doctor-tracker-server
+npm run dev   # starts Express on http://localhost:3001
+
+# In another terminal – frontend
+cd ../doctor-tracker-client
+npm run dev   # starts Next.js on http://localhost:3000
+```
+
+Open `http://localhost:3000` in your browser.  You should see the landing page, then be able to register/login and explore the dashboard.
+
+---
+
+## 📚 Features Detail
+
+| Feature | Description |
+|---------|-------------|
+| **Authentication** | Login & registration forms use the backend `/api/auth/*` routes. The JWT is stored as an http‑only `accessToken` cookie. The navbar reads `/api/auth/me` to toggle between **Login / Sign Up** and **Logout** buttons. |
+| **Proxy middleware** (`proxy.ts`) | - Redirects unauthenticated users to a custom 404 page with a login button.<br>- Prevents logged‑in users from accessing `/login` or `/register` by redirecting them to `/dashboard`. |
+| **Doctor list** (`/doctor`) | Server‑side pagination (`page`, `limit`). The UI shows Prev/Next buttons, total count, and a clean table without shadows. |
+| **Patient list** (`/patients`) | Same pagination UI as doctors, plus filtering by name, age, condition, etc. |
+| **Create / Edit forms** | All forms use shadcn `Input`, `Label`, and `Button` components with TailAdmin token classes (`bg-card`, `border-border`, etc.). |
+| **Responsive navigation** | Navbar collapses to a hamburger on mobile; the sidebar (if used) collapses to icons‑only. |
+| **Theme & Fonts** | Uses `Plus Jakarta Sans` for UI text and `JetBrains Mono` for code‑like fields. Dark mode is built‑in via Tailwind’s `dark:` utilities. |
+| **Error handling** | All service calls wrap `fetch` with `try/catch`, display toasts on failure, and return a consistent `{ success, data, meta }` shape. |
+
+---
+
+## 📦 Scripts
+
+| Script | What it does |
+|--------|--------------|
+| `npm run dev` | Starts the development server (Next.js). |
+| `npm run build` | Builds the production bundle. |
+| `npm start` | Runs the production build (`next start`). |
+| `npm run lint` | Runs ESLint + Prettier. |
+| `npm run test` *(if set up)* | Runs Jest/React Testing Library tests. |
+
+---
+
+## 🛠️ Extending the Project
+
+- **Add more seed data** – you can create a seed script in the backend (`src/seed.ts`) that inserts 15 doctors and 30 patients (5 patients per doctor). Run it with `node src/seed.ts` after the DB is connected.
+- **Custom themes** – modify `app/globals.css` to change the TailAdmin colour tokens.
+- **Deploy** – the backend can be deployed to Railway/Render, and the Next.js frontend to Vercel or Netlify. Make sure to set the `NEXT_PUBLIC_BACKEND_API_URL` to the deployed backend URL.
+
+---
+
+## 📄 License
+
+MIT © 2026 Oasif (or your organization). Feel free to fork, modify, and use it in your own projects.
+
+---
+
+*Built with love using Antigravity, Next.js, and TailAdmin design.*
