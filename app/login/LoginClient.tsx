@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 export default function LoginClient() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("jony@gmail.com");
+  const [password, setPassword] = useState("jony123");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
