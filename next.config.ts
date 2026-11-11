@@ -12,14 +12,6 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "https://doctor-tracker-server-zeta.vercel.app/api/:path*",
-      },
-    ];
-  },
 };
 
 export default nextConfig;

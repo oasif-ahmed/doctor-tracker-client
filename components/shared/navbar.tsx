@@ -15,7 +15,7 @@ export default function Navbar() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001"}/api/auth/me`, { cache: "no-store", credentials: "include" });
+        const res = await fetch("/api/auth/me", { cache: "no-store" });
         if (res.ok) {
           const data = await res.json();
           setIsAuthenticated(Boolean(data.isAuthenticated));
@@ -32,13 +32,9 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001"}/api/auth/logout`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
+      await fetch("/api/auth/logout", {
+        method: "POST",
+      });
     } catch {
       // ignore
     }

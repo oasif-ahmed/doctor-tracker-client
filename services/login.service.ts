@@ -1,9 +1,6 @@
-
-
 export async function login(credentials: Record<string, unknown>) {
-  const response = await fetch(`${process.env.BACKEND_API_URL}/auth/login`, {
+  const response = await fetch("/api/auth/login", {
     method: "POST",
-    credentials: "include", // Ensure cookies are sent/received across origins
     headers: {
       "Content-Type": "application/json",
     },
