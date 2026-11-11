@@ -24,7 +24,7 @@ Below are some key screens of the application.  The images are stored in the pro
 
 ### 1. Dashboard (Home)
 
-![Dashboard](/screenshots/dashboard.jpg)
+![Dashboard](/Users/oasif/Desktop/projects/doctor-tracker-client/public/screenshots/dashboard.jpg)
 
 *The main dashboard shows KPI cards, recent activity, and quick navigation shortcuts.*
 
