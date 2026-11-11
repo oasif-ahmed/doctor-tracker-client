@@ -77,23 +77,6 @@ Open `http://localhost:3000` in your browser.  You can register a new account, l
 
 ---
 
-## 3️⃣ System Architecture
-
-```mermaid
-flowchart TD
-    A[Browser] -->|HTTP (GET/POST)| B[Next.js Front‑end]
-    B -->|Auth cookie (httpOnly)| C[Express Backend]
-    C -->|MongoDB queries| D[MongoDB]
-    B -->|Server‑side Props| E[Next.js Middleware (proxy.ts)]
-    E -->|Redirects unauthorized| B
-    B -->|Fetch data (doctors/patients)| C
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#bfb,stroke:#333,stroke-width:2px
-    style D fill:#ff9,stroke:#333,stroke-width:2px
-    style E fill:#fcc,stroke:#333,stroke-width:2px
-```
-
 * **Front‑end** – Next.js renders pages server‑side, stores JWT in an http‑only cookie, and uses shadcn UI components.
 * **Proxy middleware (`proxy.ts`)** – protects private routes and prevents logged‑in users from accessing `/login` or `/register`.
 * **Backend** – Express with TypeScript provides REST endpoints (`/api/auth/*`, `/api/doctors`, `/api/patients`). Pagination parameters (`page`, `limit`) are handled server‑side.
