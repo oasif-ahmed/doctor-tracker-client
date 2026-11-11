@@ -4,6 +4,7 @@ import { ShieldAlert, ArrowLeft, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
+  return <div>404 - Page Not Found</div>;
   return (
     <div className="min-h-[75vh] flex items-center justify-center px-6 py-16">
       <div className="max-w-lg w-full text-center space-y-6 p-10 bg-card border border-border">
@@ -11,7 +12,7 @@ export default function NotFound() {
           <ShieldAlert className="w-7 h-7" />
         </div>
 
-        <div className="space-y-2">
+       <div className="space-y-2">
           <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Error 404
           </span>
