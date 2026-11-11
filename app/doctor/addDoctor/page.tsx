@@ -1,9 +1,12 @@
 import React from 'react'
 import DoctorPageClient from './DoctorClient'
+import { Suspense } from 'react'
 
 const AddDoctorPage = () => {
   return (
-    <div><DoctorPageClient></DoctorPageClient></div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <DoctorPageClient />
+    </Suspense>
   )
 }
 
