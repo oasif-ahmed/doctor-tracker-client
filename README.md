@@ -125,15 +125,14 @@ Using middleware gave us a **single source of truth** for access control, kept t
 
 ## 5️⃣ Visual Evidence
 
-### Desktop view (primary UI)
+<p align="center">
+  <img src="./public/screenshots/dashboard.jpg" width="45%" alt="Dashboard"/>
+  <img src="./public/screenshots/ui.png" width="45%" alt="UI Overview"/>
+</p>
+<p align="center">
+  <!-- Add more screenshots here if you have them -->
+</p>
 
-![Desktop – Dashboard](/screenshots/ui.png)
-
-*The screenshot shows the main dashboard with KPI cards, navigation, and a quick‑action button.*
-
-### Mobile view (responsive layout)
-
-> *A mobile screenshot is not currently available. The UI is fully responsive – you can test it by resizing your browser window or opening the site on a phone.*
 
 ---
 
