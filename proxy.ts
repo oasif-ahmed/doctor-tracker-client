@@ -1,0 +1,50 @@
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+// Protected routes that require authentication
+const PROTECTED_PATHS = ["/dashboard", "/doctor", "/patients"];
+
+export function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Check if this path is protected
+  const isProtected = PROTECTED_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(path + "/")
+  );
+
+  if (!isProtected) {
+    return NextResponse.next();
+  }
+
+  // Check for accessToken cookie
+  const accessToken = request.cookies.get("accessToken");
+
+  // If user is already authenticated, prevent access to login or register pages
+  if (accessToken && (pathname === "/login" || pathname === "/register")) {
+    const dashboardUrl = new URL("/dashboard", request.url);
+    return NextResponse.redirect(dashboardUrl);
+  }
+
+  if (!accessToken) {
+    // Redirect unauthenticated users to the custom 404 page with a button to login
+    const custom404Url = new URL("/404", request.url);
+    custom404Url.searchParams.set("from", pathname);
+    return NextResponse.redirect(custom404Url);
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except:
+     * - _next/static (static files)
+     * - _next/image (image optimization)
+     * - favicon.ico, etc. (metadata files)
+     * - api routes (Next.js API)
+     * - 404 page itself
+     */
+    "/((?!_next/static|_next/image|favicon.ico|api/|404).*)",
+  ],
+};
