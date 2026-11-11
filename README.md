@@ -1,144 +1,159 @@
 # Doctor Tracker Dashboard
 
-A modern, TailAdmin‑styled dashboard for managing doctors and patients. The app is built with **Next.js (React 18)**, **shadcn UI**, **TypeScript**, and **Tailwind CSS**. It communicates with a separate Express/TS backend (`doctor‑tracker‑server`) that provides authentication, CRUD operations, and pagination.
+---
+
+## 1️⃣ Description
+
+*A modern, TailAdmin‑styled dashboard that lets health‑administrators manage doctors and patients in a clean, responsive UI. Built with **Next.js (React 18)**, **shadcn UI**, **TypeScript**, and **Tailwind CSS**, it communicates with a separate Express/TS backend to handle authentication, CRUD operations, and server‑side pagination.*
 
 ---
 
-## ✨ Overview
-
-- **Responsive UI** – works on desktop, tablet, and mobile.
-- **Authentication** – login, register, logout with JWT stored in http‑only cookies.
-- **Role‑based navigation** – the navbar updates based on auth state.
-- **TailAdmin design language** – custom colour tokens, modern fonts, glass‑style header, and card‑based layouts.
-- **Pagination** – doctors and patients are paginated on the server side.
-- **Proxy middleware** – protects private routes and redirects logged‑in users away from login/sign‑up pages.
-- **Full‑stack** – separate backend (`doctor‑tracker‑server`) on `http://localhost:3001`.
-
----
-
-## 📸 Screenshots
-
-Below are some key screens of the application.  The images are stored in the project’s **user‑uploaded** assets folder; they are referenced directly with absolute file URLs so they render in the Antigravity UI.
-
----
-
-### 1. Dashboard (Home)
-
-![Dashboard](/Users/oasif/Desktop/projects/doctor-tracker-client/public/screenshots/dashboard.jpg)
-
-*The main dashboard shows KPI cards, recent activity, and quick navigation shortcuts.*
-
----
-
-### 2. Doctor Directory
-
-*(Add your own screenshot of the doctor list here – you can replace the placeholder with another uploaded image if you have one.)*
-
----
-
-### 3. Patient Directory
-
-*(Add your own screenshot of the patient list here.)*
-
----
-
-## 🚀 Getting Started
+## 2️⃣ Setup Guide
 
 ### Prerequisites
 
-- **Node.js** (>= 18) and **npm** (or **yarn**)
-- **MongoDB** instance (local or remote) – the backend expects a `MONGODB_URI` env var.
-- **Git** (to clone the repositories)
+- **Node.js** ≥ 18 (recommended LTS) and **npm** ≥ 9 (or **yarn**).
+- **MongoDB** instance – local or remote (the backend expects a `MONGODB_URI`).
+- **Git** for cloning the repositories.
 
 ### Clone the repositories
 
 ```bash
-# Frontend
+# Front‑end
 git clone <your‑frontend‑repo‑url> doctor-tracker-client
 cd doctor-tracker-client
 
-# Backend (in a sibling folder)
+# Back‑end (sibling folder)
 git clone <your‑backend‑repo‑url> doctor-tracker-server
-cd doctor-tracker-server
+cd ../doctor-tracker-server
 ```
 
 ### Install dependencies
 
 ```bash
-# Frontend
-npm install   # from doctor-tracker-client
+# Front‑end
+cd ../doctor-tracker-client
+npm install   # or `yarn`
 
-# Backend
+# Back‑end
 cd ../doctor-tracker-server
-npm install
+npm install   # or `yarn`
 ```
 
-### Environment variables
+### Environment configuration
 
-Create a `.env.local` file in **both** projects.
+Both projects ship an **`.env.example`** file. Copy it to `.env` (frontend) and `.env` (backend) and adjust values if necessary.
 
-**Frontend (`doctor-tracker-client/.env.local`):**
+```bash
+# Front‑end
+cp .env.example .env   # creates the required variables
+# Backend (inside doctor‑tracker‑server)
+cp .env.example .env
+```
 
+**`.env.example` (frontend)**
 ```env
-NEXT_PUBLIC_BACKEND_API_URL=http://localhost:3001   # point to the backend
+# Backend API URL (Express server)
+NEXT_PUBLIC_BACKEND_API_URL=http://localhost:3001
+BACKEND_API_URL=http://localhost:3001
+API_URL=http://localhost:3001/api
 ```
 
-**Backend (`doctor-tracker-server/.env`):**
-
-```env
-PORT=3001
-MONGODB_URI=mongodb://localhost:27017/doctor-tracker
-JWT_SECRET=your‑strong‑secret
-```
+**Backend `.env.example`** (the back‑end already contains a similar file; ensure the same values are set).
 
 ### Run the applications
 
 ```bash
-# In one terminal – backend
+# Terminal 1 – backend
 cd doctor-tracker-server
 npm run dev   # starts Express on http://localhost:3001
 
-# In another terminal – frontend
+# Terminal 2 – frontend
 cd ../doctor-tracker-client
 npm run dev   # starts Next.js on http://localhost:3000
 ```
 
-Open `http://localhost:3000` in your browser.  You should see the landing page, then be able to register/login and explore the dashboard.
+Open `http://localhost:3000` in your browser.  You can register a new account, log in, and explore the dashboard, doctor directory, and patient directory.
 
 ---
 
-## 📚 Features Detail
+## 3️⃣ System Architecture
 
-| Feature | Description |
-|---------|-------------|
-| **Authentication** | Login & registration forms use the backend `/api/auth/*` routes. The JWT is stored as an http‑only `accessToken` cookie. The navbar reads `/api/auth/me` to toggle between **Login / Sign Up** and **Logout** buttons. |
-| **Proxy middleware** (`proxy.ts`) | - Redirects unauthenticated users to a custom 404 page with a login button.<br>- Prevents logged‑in users from accessing `/login` or `/register` by redirecting them to `/dashboard`. |
-| **Doctor list** (`/doctor`) | Server‑side pagination (`page`, `limit`). The UI shows Prev/Next buttons, total count, and a clean table without shadows. |
-| **Patient list** (`/patients`) | Same pagination UI as doctors, plus filtering by name, age, condition, etc. |
-| **Create / Edit forms** | All forms use shadcn `Input`, `Label`, and `Button` components with TailAdmin token classes (`bg-card`, `border-border`, etc.). |
-| **Responsive navigation** | Navbar collapses to a hamburger on mobile; the sidebar (if used) collapses to icons‑only. |
-| **Theme & Fonts** | Uses `Plus Jakarta Sans` for UI text and `JetBrains Mono` for code‑like fields. Dark mode is built‑in via Tailwind’s `dark:` utilities. |
-| **Error handling** | All service calls wrap `fetch` with `try/catch`, display toasts on failure, and return a consistent `{ success, data, meta }` shape. |
+```mermaid
+flowchart TD
+    A[Browser] -->|HTTP (GET/POST)| B[Next.js Front‑end]
+    B -->|Auth cookie (httpOnly)| C[Express Backend]
+    C -->|MongoDB queries| D[MongoDB]
+    B -->|Server‑side Props| E[Next.js Middleware (proxy.ts)]
+    E -->|Redirects unauthorized| B
+    B -->|Fetch data (doctors/patients)| C
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#ff9,stroke:#333,stroke-width:2px
+    style E fill:#fcc,stroke:#333,stroke-width:2px
+```
+
+* **Front‑end** – Next.js renders pages server‑side, stores JWT in an http‑only cookie, and uses shadcn UI components.
+* **Proxy middleware (`proxy.ts`)** – protects private routes and prevents logged‑in users from accessing `/login` or `/register`.
+* **Backend** – Express with TypeScript provides REST endpoints (`/api/auth/*`, `/api/doctors`, `/api/patients`). Pagination parameters (`page`, `limit`) are handled server‑side.
+* **Database** – MongoDB stores doctors, patients, and user credentials.
+
+---
+
+## 4️⃣ Technical Decisions
+
+### 4.1 Why we used **shadcn UI** instead of building a custom component library?
+
+1. **Design consistency** – shadcn ships with a Tailwind‑compatible design system that matches the TailAdmin aesthetic out of the box, reducing the need for a separate CSS framework.
+2. **Rapid development** – each primitive (`Button`, `Input`, `Dialog`, etc.) is pre‑styled, accessible, and has built‑in theming (`bg-card`, `border-border`). This let us focus on business logic (auth, pagination) rather than UI minutiae.
+3. **Future extensibility** – shadcn components are fully composable and support the `asChild` pattern, which we leveraged for custom navigation links without sacrificing type safety.
+4. **Performance** – being Tailwind‑first, the final CSS bundle contains only the utilities we actually use, keeping the bundle size small.
+
+### 4.2 Why we opted for **Next.js middleware (`proxy.ts`)** for route protection instead of client‑side checks?
+
+| Aspect | Middleware (server‑side) | Client‑side only |
+|--------|--------------------------|------------------|
+| **Security** | Guarantees that unauthenticated requests never reach protected pages; redirects happen before any UI renders. | Can be bypassed if a user manually navigates to a URL or disables JS. |
+| **Performance** | One HTTP round‑trip on the server, no extra JavaScript execution on the client. | Requires the full page to load, then the client decides to redirect – a wasted network request. |
+| **SSR Compatibility** | Works with Next.js's Server‑Side Rendering – the page never renders if the user lacks a valid cookie. | SSR would still render the page, then client would flash a redirect, causing a poor UX. |
+| **Maintainability** | Centralised list of protected paths (`PROTECTED_PATHS`) and a single place to adjust redirect logic. | Scattered checks across many components, easy to forget a guard. |
+
+Using middleware gave us a **single source of truth** for access control, kept the UI lean, and avoided exposing any security‑critical logic to the browser.
+
+---
+
+## 5️⃣ Visual Evidence
+
+### Desktop view (primary UI)
+
+![Desktop – Dashboard](/screenshots/ui.png)
+
+*The screenshot shows the main dashboard with KPI cards, navigation, and a quick‑action button.*
+
+### Mobile view (responsive layout)
+
+> *A mobile screenshot is not currently available. The UI is fully responsive – you can test it by resizing your browser window or opening the site on a phone.*
 
 ---
 
 ## 📦 Scripts
 
-| Script | What it does |
-|--------|--------------|
-| `npm run dev` | Starts the development server (Next.js). |
-| `npm run build` | Builds the production bundle. |
-| `npm start` | Runs the production build (`next start`). |
-| `npm run lint` | Runs ESLint + Prettier. |
-| `npm run test` *(if set up)* | Runs Jest/React Testing Library tests. |
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Starts the development server (`next dev`). |
+| `npm run build` | Generates an optimized production build. |
+| `npm start` | Serves the production build (`next start`). |
+| `npm run lint` | Runs ESLint + Prettier checks. |
+| `npm run test` *(if configured)* | Executes Jest / React‑Testing‑Library suites. |
 
 ---
 
 ## 🛠️ Extending the Project
 
-- **Add more seed data** – you can create a seed script in the backend (`src/seed.ts`) that inserts 15 doctors and 30 patients (5 patients per doctor). Run it with `node src/seed.ts` after the DB is connected.
-- **Custom themes** – modify `app/globals.css` to change the TailAdmin colour tokens.
-- **Deploy** – the backend can be deployed to Railway/Render, and the Next.js frontend to Vercel or Netlify. Make sure to set the `NEXT_PUBLIC_BACKEND_API_URL` to the deployed backend URL.
+- **Seeding data** – add a `src/seed.ts` script in the backend that inserts **15 doctors** and **30 patients** (5 patients per doctor). Run it with `node src/seed.ts` after the DB connection is established.
+- **Theme customisation** – edit `app/globals.css` to modify TailAdmin colour tokens.
+- **Deployment** – deploy the backend to Railway/Render and the frontend to Vercel or Netlify; remember to set `NEXT_PUBLIC_BACKEND_API_URL` to the production endpoint.
 
 ---
 
@@ -148,4 +163,4 @@ MIT © 2026 Oasif (or your organization). Feel free to fork, modify, and use it 
 
 ---
 
-*Built with love using Antigravity, Next.js, and TailAdmin design.*
+*Built with love using Antigravity, Next.js, shadcn UI, and TailAdmin design.*
