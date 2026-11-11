@@ -23,7 +23,7 @@ export default function RegisterClient() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001"}/api/user/signup`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://doctor-tracker-server-zeta.vercel.app"}/api/user/signup`,
         {
           method: "POST",
           headers: {

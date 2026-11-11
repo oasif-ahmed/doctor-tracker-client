@@ -22,7 +22,7 @@ export default function LoginClient() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001"}/api/auth/login`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://doctor-tracker-server-zeta.vercel.app"}/api/auth/login`,
         {
           method: "POST",
           headers: {
