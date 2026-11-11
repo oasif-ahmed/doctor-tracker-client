@@ -123,15 +123,20 @@ Using middleware gave us a **single source of truth** for access control, kept t
 
 ---
 
-## 5️⃣ Visual Evidence
+## 📸 Screenshots
 
 <p align="center">
-  <img src="./public/screenshots/dashboard.jpg" width="45%" alt="Dashboard"/>
-  <img src="./public/screenshots/ui.png" width="45%" alt="UI Overview"/>
+  <img src="./public/Screenshot%202026-11-11%20at%2010.07.26%20PM.png" width="45%" alt="Screenshot 1"/>
+  <img src="./public/Screenshot%202026-11-11%20at%2010.07.37%20PM.png" width="45%" alt="Screenshot 2"/>
+</p>
+<p align="center">
+  <img src="./public/Screenshot%202026-11-11%20at%2010.07.47%20PM.png" width="45%" alt="Screenshot 3"/>
+  <img src="./public/Screenshot%202026-11-11%20at%2010.08.17%20PM.png" width="45%" alt="Screenshot 4"/>
 </p>
 <p align="center">
   <!-- Add more screenshots here if you have them -->
 </p>
+
 
 
 ---
