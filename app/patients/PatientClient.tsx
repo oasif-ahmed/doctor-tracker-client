@@ -122,7 +122,7 @@ export default function PatientClient({ patients: serverPatients, meta }: Patien
     setLoadingDeleteId(id);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001"}/api/${id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://doctor-tracker-server-zeta.vercel.app"}/api/${id}`,
         { method: "DELETE" }
       );
       if (!res.ok) {
@@ -159,7 +159,7 @@ export default function PatientClient({ patients: serverPatients, meta }: Patien
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001"}/api/${editingPatient._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://doctor-tracker-server-zeta.vercel.app"}/api/${editingPatient._id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

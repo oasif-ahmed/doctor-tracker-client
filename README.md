@@ -54,9 +54,9 @@ cp .env.example .env
 **`.env.example` (frontend)**
 ```env
 # Backend API URL (Express server)
-NEXT_PUBLIC_BACKEND_API_URL=http://localhost:3001
-BACKEND_API_URL=http://localhost:3001
-API_URL=http://localhost:3001/api
+NEXT_PUBLIC_BACKEND_API_URL=https://doctor-tracker-server-zeta.vercel.app
+BACKEND_API_URL=https://doctor-tracker-server-zeta.vercel.app
+API_URL=https://doctor-tracker-server-zeta.vercel.app/api
 ```
 
 **Backend `.env.example`** (the back‑end already contains a similar file; ensure the same values are set).

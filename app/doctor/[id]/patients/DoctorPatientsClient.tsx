@@ -44,7 +44,7 @@ export default function DoctorPatientsClient({
     setLoadingDeleteId(patientId);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001"}/api/${patientId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://doctor-tracker-server-zeta.vercel.app"}/api/${patientId}`,
         {
           method: "DELETE",
         }
@@ -72,7 +72,7 @@ export default function DoctorPatientsClient({
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001"}/api/patient`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://doctor-tracker-server-zeta.vercel.app"}/api/patient`,
         {
           method: "POST",
           headers: {
