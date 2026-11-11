@@ -6,6 +6,12 @@ const PROTECTED_PATHS = ["/dashboard", "/doctor", "/patients"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const accessToken = request.cookies.get("accessToken");
+
+  // If user is already authenticated, keep them away from login/register
+  if (accessToken && (pathname === "/login" || pathname === "/register")) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
 
   // Check if this path is protected
   const isProtected = PROTECTED_PATHS.some(
@@ -16,17 +22,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check for accessToken cookie
-  const accessToken = request.cookies.get("accessToken");
-
-  // If user is already authenticated, prevent access to login or register pages
-  if (accessToken && (pathname === "/login" || pathname === "/register")) {
-    const dashboardUrl = new URL("/dashboard", request.url);
-    return NextResponse.redirect(dashboardUrl);
-  }
-
+  // Unauthenticated users go to the custom 404 page with a login button
   if (!accessToken) {
-    // Redirect unauthenticated users to the custom 404 page with a button to login
     const custom404Url = new URL("/404", request.url);
     custom404Url.searchParams.set("from", pathname);
     return NextResponse.redirect(custom404Url);
