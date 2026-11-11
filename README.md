@@ -24,7 +24,7 @@ Below are some key screens of the application.  The images are stored in the pro
 
 ### 1. Dashboard (Home)
 
-![Dashboard](/Users/oasif/.gemini/antigravity/brain/98de204b-fd55-4fb4-9f39-4a3375449cc4/.user_uploaded/media_1794407817124_c759c577.jpg)
+![Dashboard](/screenshots/dashboard.jpg)
 
 *The main dashboard shows KPI cards, recent activity, and quick navigation shortcuts.*
 
